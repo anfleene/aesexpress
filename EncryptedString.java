@@ -56,7 +56,7 @@ class EncryptedString {
 	}
 	public SecretKeySpec getKeySpec() throws IOException, NoSuchAlgorithmException {
 		byte[] bytes = new byte[16];
-	    File f = new File("sample_aes_key");
+	    File f = new File("aes_key");
 	    SecretKey key = null;
 	    SecretKeySpec spec = null;
 	    if (f.exists()) {
@@ -109,7 +109,7 @@ class EncryptedString {
 		  }
 		  return returnString;
 	  }
-/*	  public static void main(String[] args) throws Exception {
+	  public static void main(String[] args) throws Exception {
 	    String text = "deerrrr";
 	    EncryptedString eString = new EncryptedString(text);
 	    String encrypted = eString.toString();
@@ -120,6 +120,5 @@ class EncryptedString {
 	    System.out.println("s2: EncryptedString.toString(): " + eString2);
 	    eString2.decrypt();
 	    System.out.println("s2: DecryptedString.toString(): " + eString2);
-	  }
-*/	 
+	  }	 
 	}
