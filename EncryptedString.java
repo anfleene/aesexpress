@@ -8,17 +8,46 @@
 class EncryptedString {
 	private SecretKeySpec keySpec;
 	private byte[] bytes;
+	private String string;
+	private boolean encrypted;
+	
+	EncryptedString(String arg, boolean encrypt){
+		this.encrypted = encrypt;
+		this.bytes = arg.getBytes();
+		try{
+			System.out.println(new String(this.bytes, "utf-8"));
+		}catch (Exception e){
+			e.printStackTrace();
+		}
+		this.string = arg;
+		if (encrypted){
+			try{
+				keySpec = getKeySpec();
+				this.encrypt();
+			}catch (Exception e) {
+				e.printStackTrace();
+				return;
+			}
+		}
+	}
+	
 	EncryptedString(String arg){
+		this.encrypted = false;
+		this.bytes = arg.getBytes();
+		this.string = arg;
 		try{
 			keySpec = getKeySpec();
-			this.encrypt(arg);
-		}catch (Exception e) {
-	        e.printStackTrace();
-	        return;
-	    }
+			this.encrypt();
+		}catch(Exception e){
+			e.printStackTrace();
+			return;
+		}
 	}
+	
 	EncryptedString(){
 		this.bytes = null;
+		this.string = "";
+		this.encrypted = false;
 		try{
 			keySpec = getKeySpec();
 		}catch (Exception e) {
@@ -34,7 +63,7 @@ class EncryptedString {
 	      new FileInputStream(f).read(bytes);
 	    } else {
 	       KeyGenerator kgen = KeyGenerator.getInstance("AES");
-	       kgen.init(256);
+	       kgen.init(128);
 	       key = kgen.generateKey();
 	       bytes = key.getEncoded();
 	       new FileOutputStream(f).write(bytes);
@@ -42,36 +71,55 @@ class EncryptedString {
 	    spec = new SecretKeySpec(bytes,"AES");
 	    return spec;
 	  }
-	  public void encrypt(String arg) throws Exception {
-	    	Cipher cipher = Cipher.getInstance("AES/ECB/PKCS7Padding");
+	  public void encrypt() throws Exception {
+		  if(!this.encrypted){
+	    	Cipher cipher = Cipher.getInstance("AES");
 	    	cipher.init(Cipher.ENCRYPT_MODE, keySpec);
-	    	byte[] argBytes = arg.getBytes();
-	    	byte[] base64Bytes = Base64.encodeBase64(argBytes);
-	    	this.bytes = cipher.doFinal(base64Bytes);
+	    	byte[] base64Bytes = Base64.encodeBase64(this.bytes);
+	    	byte[] encryptedBytes = cipher.doFinal(base64Bytes);
+	    	 this.bytes = Base64.encodeBase64(encryptedBytes);
+	    	this.string = new String(this.bytes, "utf-8");
+	    	this.encrypted = true;
+	    	try{
+				System.out.println(new String(this.bytes, "utf-8"));
+			}catch (Exception e){
+				e.printStackTrace();
+			}
+		  }
 	  }
-	  public String decrypt() throws Exception {
+	  public void decrypt() throws Exception {
+		  if(encrypted){
 			SecretKeySpec spec = getKeySpec();
-			Cipher cipher = Cipher.getInstance("AES/ECB/PKCS7Padding");
+			Cipher cipher = Cipher.getInstance("AES");
 			cipher.init(Cipher.DECRYPT_MODE, spec);
-			byte[] B64bytes  = cipher.doFinal(this.bytes);
-			byte[] decrypted = Base64.decodeBase64(B64bytes);
-			return new String(decrypted, "ASCII");
+			byte[] B64bytes = Base64.decodeBase64(this.bytes);
+			byte[] decrypted = cipher.doFinal(B64bytes);
+			this.bytes = Base64.decodeBase64(decrypted);
+			this.string = new String(this.bytes, "utf-8");
+			this.encrypted = false;
+		  }
 	  }
 	  
 	  public String toString(){
 		  String returnString;
 		  try{
-			  returnString = new String(this.bytes, "ASCII");
+			  returnString = new String(this.bytes, "utf-8");
 		  }catch(Exception e){
 			  returnString = "ERROR";
 		  }
 		  return returnString;
 	  }
-	  public static void main(String[] args) throws Exception {
-	    String text = "EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE";
+/*	  public static void main(String[] args) throws Exception {
+	    String text = "deerrrr";
 	    EncryptedString eString = new EncryptedString(text);
-	    String decrypted = eString.decrypt();
-	    System.out.println(decrypted);
-	    System.out.println(eString);
+	    String encrypted = eString.toString();
+	    System.out.println("s1: EncryptedString.toString(): " + eString);
+	    eString.decrypt();
+	    System.out.println("s1: DecryptedString.toString(): " + eString);
+	    EncryptedString eString2 = new EncryptedString(encrypted, true);
+	    System.out.println("s2: EncryptedString.toString(): " + eString2);
+	    eString2.decrypt();
+	    System.out.println("s2: DecryptedString.toString(): " + eString2);
 	  }
+*/	 
 	}
