@@ -62,4 +62,9 @@ class InBoundChat{
 			}
 		return message;
 	}
+	
+	protected void finalize() throws Throwable {
+		this.closeConnection();
+	}
+
 }

@@ -62,4 +62,8 @@ class OutBoundChat {
 			ioException.printStackTrace();
 		}
 	}
+	
+	protected void finalize() throws Throwable {
+		this.closeConnection();
+	}
 }

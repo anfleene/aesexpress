@@ -1,22 +1,52 @@
 import java.io.*;
-import java.net.*;
+
 
 public class ChatController{
-	String message;
+	String messageIn;
 	InBoundChat inBound;
 	OutBoundChat outBound;
 	
 	ChatController(String hostname, int inBoundPort, int outBoundPort){
-		inBound = new InBoundChat(inBoundPort);
-		outBound = new OutBoundChat(hostname, outBoundPort);
+		this.inBound = new InBoundChat(inBoundPort);
+		this.outBound = new OutBoundChat(hostname, outBoundPort);
 	}
 	
-	public  String receiveMsg(){
-		return "";
+	public String getMsg(){
+		return this.messageIn;
 	}
 	
-	public String sendMsg(){
-		return "";
+	public void receiveMsg(){
+		String input = "";
+		try{
+			input = inBound.in.readUTF();
+		} catch(IOException ioe){
+			ioe.printStackTrace();
+		}
+		EncryptedString eString = new EncryptedString(input, true);
+		try{
+			eString.decrypt();
+		}catch (Exception e){
+			e.printStackTrace();
+		}
+		this.messageIn = eString.toString();
+	}
+	
+	public void sendMsg(String msg){
+		EncryptedString eString = new EncryptedString(msg);
+		try{
+		outBound.out.writeUTF(eString.toString());
+		} catch(IOException ioe){
+			ioe.printStackTrace();
+		}
+	}
+	
+	public static void main(String[] args){
+
+	}
+	
+	protected void finalize() throws Throwable {
+		this.inBound.closeConnection();
+		this.outBound.closeConnection();
 	}
 
 }
