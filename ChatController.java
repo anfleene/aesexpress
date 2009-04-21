@@ -1,14 +1,17 @@
-import java.io.*;
 
-
-public class ChatController{
+class ChatController{
 	String messageIn;
-	InBoundChat inBound;
-	OutBoundChat outBound;
+	String messageOut;
+	String encryptedIn;
+	String encryptedOut;
+	SocketServer inBound;
+	SocketClient outBound;
 	
-	ChatController(String hostname, int inBoundPort, int outBoundPort){
-		this.inBound = new InBoundChat(inBoundPort);
-		this.outBound = new OutBoundChat(hostname, outBoundPort);
+	ChatController(){}
+	
+	ChatController(String hostname, int clientPort, int serverPort){
+		this.outBound = new SocketClient(hostname, clientPort);
+		this.inBound = new SocketServer(serverPort);
 	}
 	
 	public String getMsg(){
@@ -16,37 +19,31 @@ public class ChatController{
 	}
 	
 	public void receiveMsg(){
-		String input = "";
-		try{
-			input = inBound.in.readUTF();
-		} catch(IOException ioe){
-			ioe.printStackTrace();
+		while(true){
+			if(this.inBound.getMessage() != this.encryptedIn){
+				this.encryptedIn = this.inBound.getMessage();
+				EncryptedString eString = new EncryptedString(this.encryptedIn, true);
+				try{
+					eString.decrypt();
+				}catch (Exception e){
+					e.printStackTrace();
+				}
+				this.messageIn = eString.toString();
+			}
 		}
-		EncryptedString eString = new EncryptedString(input, true);
-		try{
-			eString.decrypt();
-		}catch (Exception e){
-			e.printStackTrace();
-		}
-		this.messageIn = eString.toString();
+		
 	}
 	
 	public void sendMsg(String msg){
+		this.messageOut = msg;
 		EncryptedString eString = new EncryptedString(msg);
-		try{
-		outBound.out.writeUTF(eString.toString());
-		} catch(IOException ioe){
-			ioe.printStackTrace();
-		}
+		this.encryptedOut = eString.toString();
+		this.outBound.sendMsg(eString.toString());
 	}
 	
-	public static void main(String[] args){
-
-	}
-	
-	protected void finalize() throws Throwable {
-		this.inBound.closeConnection();
-		this.outBound.closeConnection();
+	public void connect(String host, int clientPort, int serverPort){
+		this.outBound = new SocketClient(host, clientPort);
+		this.inBound = new SocketServer(serverPort);
 	}
 
 }

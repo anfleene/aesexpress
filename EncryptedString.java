@@ -4,7 +4,6 @@
 	import java.security.NoSuchAlgorithmException;
 	import org.apache.commons.codec.binary.Base64; 
 	 
-
 class EncryptedString {
 	private SecretKeySpec keySpec;
 	private byte[] bytes;
@@ -14,11 +13,6 @@ class EncryptedString {
 	EncryptedString(String arg, boolean encrypt){
 		this.encrypted = encrypt;
 		this.bytes = arg.getBytes();
-		try{
-			System.out.println(new String(this.bytes, "utf-8"));
-		}catch (Exception e){
-			e.printStackTrace();
-		}
 		this.string = arg;
 		if (encrypted){
 			try{
@@ -80,11 +74,6 @@ class EncryptedString {
 	    	 this.bytes = Base64.encodeBase64(encryptedBytes);
 	    	this.string = new String(this.bytes, "utf-8");
 	    	this.encrypted = true;
-	    	try{
-				System.out.println(new String(this.bytes, "utf-8"));
-			}catch (Exception e){
-				e.printStackTrace();
-			}
 		  }
 	  }
 	  public void decrypt() throws Exception {
@@ -108,17 +97,5 @@ class EncryptedString {
 			  returnString = "ERROR";
 		  }
 		  return returnString;
-	  }
-	  public static void main(String[] args) throws Exception {
-	    String text = "deerrrr";
-	    EncryptedString eString = new EncryptedString(text);
-	    String encrypted = eString.toString();
-	    System.out.println("s1: EncryptedString.toString(): " + eString);
-	    eString.decrypt();
-	    System.out.println("s1: DecryptedString.toString(): " + eString);
-	    EncryptedString eString2 = new EncryptedString(encrypted, true);
-	    System.out.println("s2: EncryptedString.toString(): " + eString2);
-	    eString2.decrypt();
-	    System.out.println("s2: DecryptedString.toString(): " + eString2);
 	  }	 
 	}
