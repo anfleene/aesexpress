@@ -15,21 +15,46 @@ public class ChatInterface extends JFrame implements ActionListener {
 	private JTextArea textInput;
 	private JButton sendButton;
 	private JButton connectButton;
-	private ChatController chat;
+	private ChatController newChat;
 	private BorderLayout mainBox;
 	private Box top;
 	private Box bottom;
 	private Box topBttm;
 	private Box buttonBttm;
+	private Box connectStuff;
 	private Color color;
-
-
 	
+	private JPopupMenu pop;
+	private ButtonGroup radioButtons;
+	private JRadioButton con1;
+	private JRadioButton con2;
+	private JTextField hostName;
+	private JLabel hostLabel;
+	private JButton ok;
+	private String ipAdd = "";
+	
+	private String lastMess = "";
 	
 	public ChatInterface()
 	{
 		
-			chat = new ChatController();
+			newChat = new ChatController();
+			
+			
+			
+			radioButtons = new ButtonGroup();
+			con1 = new JRadioButton("4444/4445");
+			con2 = new JRadioButton("4445/4444");
+			hostName = new JTextField();
+			hostLabel = new JLabel("IP Address");
+			ok = new JButton("OK");
+			ok.addActionListener(this);
+			
+			
+			
+			
+			
+			
 		 JFrame inter = new JFrame("Your Chat");
 		    inter.setBounds(0, 0, 400, 400);
 		    inter.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -66,14 +91,33 @@ public class ChatInterface extends JFrame implements ActionListener {
 			sendButton.addActionListener(chat);
 			buttonBttm.add(sendButton);
 			connectButton = new JButton("Connect");
+			connectButton.addActionListener(this);
 			buttonBttm.add(connectButton);
+			
+			connectStuff = Box.createVerticalBox();
+			
+			
+			
+			con1 = new JRadioButton("4444/4445");
+			con2 = new JRadioButton("4445/4444");
+			radioButtons = new ButtonGroup();
+			radioButtons.add(con1);
+			radioButtons.add(con2);
+			hostName = new JTextField();
+			hostLabel = new JLabel("IP Address:");
+			ok = new JButton("OK");
+			ok.addActionListener(this);
 			//connectButton.addActionListener(this);
-
+			connectStuff.add(con1);
+			connectStuff.add(con2);
+			connectStuff.add(hostLabel);
+			connectStuff.add(hostName);
 		    Box overAll = Box.createVerticalBox();
 		    
 		    overAll.add(top);
 		    overAll.add(topBttm);
 		    overAll.add(buttonBttm);
+		    overAll.add(connectStuff);
 		    
 
 		    Container content = inter.getContentPane();
@@ -84,15 +128,75 @@ public class ChatInterface extends JFrame implements ActionListener {
 		    
 		    content.setBackground(color);
 		    inter.setVisible(true);
+		    
+		    while (true)
+		    {
+		    	if(newChat.connected)
+		    	{
+		    		String newMess = newChat.getMsg();
+		    		if(newMess != lastMess)
+		    		{
+		    			lastMess = newMess;
+		    			chatArea.append(ipAdd + " -> " + newMess + "\n");
+		    	        chatArea.setCaretPosition(chatArea.getDocument().getLength());
+		    		}
+		    	}
+		    	
+		    }
 		
 	
 	}
 	
 	public void actionPerformed(ActionEvent e)
-    {
+    {		Object source = e.getSource();
+    		if(source.equals(sendButton))
+    		{
             String text = textInput.getText();
-            chat.sendMsg(text);
-            
+            newChat.sendMsg(text);
+    		}
+    		else if(source.equals(connectButton))
+    		{
+    			    		
+    			
+    			int serverSocket = -1;
+    			int clientSocket = -1;
+    		
+    			String host = hostName.getText();
+    			ipAdd = host;
+    			
+    			if(con1.isSelected())
+    			{
+    				serverSocket = 4444;
+    				clientSocket = 4445;
+    				
+    			}
+    			else if(con2.isSelected())
+    			{
+    				serverSocket = 4445;
+    				clientSocket = 4444;
+    			}
+    			else
+    			{
+    				chatArea.append("ERROR -> **************** CONNECTION FAILED, PLEASE RETRY***************\n");
+    		        chatArea.setCaretPosition(chatArea.getDocument().getLength());
+    			}
+    			if(host.equals("") || serverSocket == -1 || clientSocket == -1)
+    			{
+    				
+    				chatArea.append("ERROR -> **************** CONNECTION FAILED, PLEASE RETRY***************\n");
+    		        chatArea.setCaretPosition(chatArea.getDocument().getLength());
+    			}
+    			else{
+    				newChat.connect(host, clientSocket, serverSocket);
+    				System.out.println(serverSocket);
+    				System.out.println(clientSocket);
+    				System.out.println(host);
+    			}
+    			
+    			
+    			
+    			
+    		}
             
            
     } // end of actionPerformed()

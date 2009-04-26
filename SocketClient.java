@@ -24,7 +24,7 @@ class SocketClient{
   
   public void listenSocket(){
 //Create socket connection
-	 while(!this.connected || System.currentTimeMillis() < this.timeout){
+	 while(!this.connected && System.currentTimeMillis() < this.timeout){
 		 try{
 			 socket = new Socket(hostName, port);
 		 } catch (UnknownHostException e) {

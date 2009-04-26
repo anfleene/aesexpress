@@ -14,7 +14,7 @@ class SocketServer{
    SocketServer(int portNumber){ //Begin Constructor
 	   this.port = portNumber;
 	   this.connected = false;
-	   this.timeout = System.currentTimeMillis() + 30000;
+	   this.timeout = System.currentTimeMillis() + 10000;
 	   listenSocket();    
    } //End Constructor
 
@@ -22,7 +22,7 @@ class SocketServer{
 	 return this.line;
  }
   private void listenSocket(){
-	while(!this.connected || System.currentTimeMillis() < this.timeout){
+	while(!this.connected && System.currentTimeMillis() < this.timeout){
 		try{
 			//getMessage(); 
 			server = new ServerSocket(this.port);

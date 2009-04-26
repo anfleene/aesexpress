@@ -1,4 +1,3 @@
-
 class ChatController{
 	String messageIn;
 	String messageOut;
@@ -6,12 +5,14 @@ class ChatController{
 	String encryptedOut;
 	SocketServer inBound;
 	SocketClient outBound;
+	boolean connected;
 	
-	ChatController(){}
+	ChatController(){ connected = false;}
 	
 	ChatController(String hostname, int clientPort, int serverPort){
 		this.outBound = new SocketClient(hostname, clientPort);
 		this.inBound = new SocketServer(serverPort);
+		
 	}
 	
 	public String getMsg(){
@@ -44,6 +45,7 @@ class ChatController{
 	public void connect(String host, int clientPort, int serverPort){
 		this.inBound  = new SocketServer(serverPort);
 		this.outBound = new SocketClient(host, clientPort);
+		this.connected  = true;
 	}
 
 }
