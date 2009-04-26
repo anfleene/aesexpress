@@ -42,8 +42,8 @@ class ChatController{
 	}
 	
 	public void connect(String host, int clientPort, int serverPort){
+		this.inBound  = new SocketServer(serverPort);
 		this.outBound = new SocketClient(host, clientPort);
-		this.inBound = new SocketServer(serverPort);
 	}
 
 }

@@ -6,11 +6,15 @@ class SocketClient{
    PrintWriter out = null;
    BufferedReader in = null;
    String hostName;
+   boolean connected;
    int port;
+   long timeout;
+   
 
    SocketClient(String host, int portNumber){ //Begin Constructor
 	   this.hostName = host;
 	   this.port = portNumber;
+	   this.timeout = System.currentTimeMillis() + 30000;
 	   listenSocket();
    } //End Constructor
    
@@ -20,16 +24,24 @@ class SocketClient{
   
   public void listenSocket(){
 //Create socket connection
-     try{
-       socket = new Socket(hostName, port);
-       out = new PrintWriter(socket.getOutputStream(), true);
-       in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-     } catch (UnknownHostException e) {
-       System.out.println("Unknown host: " + hostName);
-       System.exit(1);
-     } catch  (IOException e) {
-       System.out.println("No I/O");
-       System.exit(1);
-     }
+	 while(!this.connected || System.currentTimeMillis() < this.timeout){
+		 try{
+			 socket = new Socket(hostName, port);
+		 } catch (UnknownHostException e) {
+			 System.out.println("Connection Failed, Retrying");
+		 } catch (IOException e){
+			 System.out.println("Connection Failed, Retrying");
+		 }
+  	}
+	if (!this.connected){
+		System.out.println("Connection Timed out");
+	}else{
+		try{
+			out = new PrintWriter(socket.getOutputStream(), true);
+			in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+		}catch  (IOException e) {
+			System.out.println("No I/0");
+		}
+	}
   }
 }

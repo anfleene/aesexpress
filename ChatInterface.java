@@ -74,6 +74,17 @@ public class ChatInterface extends JFrame implements ActionListener {
 		    
 		    content.setBackground(color);
 		    inter.setVisible(true);
+		    chat.connect("localhost", 4444, 4445);
+		    
+	}
+	
+	void recieveMsg(){
+		String lastMsg = "";
+		while(true){
+			if(chat.getMsg() != lastMsg){
+				System.out.println(chat.getMsg());
+			}
+		}
 	}
 	
 	public void actionPerformed(ActionEvent e)
@@ -89,4 +100,5 @@ public class ChatInterface extends JFrame implements ActionListener {
             //locationLabel.setText(MESSAGES[i][LOCATION_INDEX]);
             //this.validate();
     } // end of actionPerformed()
+
 }
