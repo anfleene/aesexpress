@@ -2,40 +2,39 @@ import java.io.*;
 import java.net.*;
 
 class SocketServer{
-   ServerSocket server = null;
-   Socket client = null;
-   BufferedReader in = null;
-   PrintWriter out = null;
-   String line;
-   boolean connected;
-   long timeout;
-   int port;
+	public boolean connected;
+	ServerSocket server = null;
+	Socket client = null;
+	BufferedReader in = null;
+	PrintWriter out = null;
+	String line;
+	long timeout;
+	int port;
    
    SocketServer(int portNumber){ //Begin Constructor
 	   this.port = portNumber;
 	   this.connected = false;
-	   this.timeout = System.currentTimeMillis() + 10000;
-	   listenSocket();    
+	   this.listenSocket();
    } //End Constructor
 
  public String getMessage(){
 	 return this.line;
  }
-  private void listenSocket(){
+  public void listenSocket(){
+	this.timeout = System.currentTimeMillis() + 10000;
 	while(!this.connected && System.currentTimeMillis() < this.timeout){
-		try{
-			//getMessage(); 
+		try{ 
 			server = new ServerSocket(this.port);
 			this.connected = true;
-		} catch (IOException e) {
+		} catch (Exception e) {
 			System.out.println("Connection failed, trying again");
-		}	
+		}
     }
 	
 	if(!this.connected){
 		System.out.println("Connection Failed");
 	}else{
-
+		System.out.println("Connected on port: " + this.port);
 		try{
 			client = server.accept();
 		} catch (IOException e) {

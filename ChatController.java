@@ -42,10 +42,14 @@ class ChatController{
 		this.outBound.sendMsg(eString.toString());
 	}
 	
-	public void connect(String host, int clientPort, int serverPort){
-		this.inBound  = new SocketServer(serverPort);
-		this.outBound = new SocketClient(host, clientPort);
-		this.connected  = true;
+	public void connect(String host, int clientPort, int serverPort, boolean choice1){
+		if(choice1){
+			this.inBound  = new SocketServer(serverPort);
+			this.outBound = new SocketClient(host, clientPort);
+		}else{
+			this.outBound = new SocketClient(host, clientPort);
+			this.inBound  = new SocketServer(serverPort);
+		}
 	}
 
 }

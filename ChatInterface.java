@@ -160,12 +160,14 @@ public class ChatInterface extends JFrame implements ActionListener {
     			
     			int serverSocket = -1;
     			int clientSocket = -1;
+    			boolean choice1 = false;
     		
     			String host = hostName.getText();
     			ipAdd = host;
     			
     			if(con1.isSelected())
     			{
+    				choice1 = true;
     				serverSocket = 4444;
     				clientSocket = 4445;
     				
@@ -187,10 +189,10 @@ public class ChatInterface extends JFrame implements ActionListener {
     		        chatArea.setCaretPosition(chatArea.getDocument().getLength());
     			}
     			else{
-    				newChat.connect(host, clientSocket, serverSocket);
-    				System.out.println(serverSocket);
-    				System.out.println(clientSocket);
-    				System.out.println(host);
+    				System.out.println("ServerSocket " + serverSocket);
+    				System.out.println("ClientSocket " + clientSocket);
+    				System.out.println("Host Name " + host);
+    				newChat.connect(host, clientSocket, serverSocket, choice1);
     			}
     			
     			
