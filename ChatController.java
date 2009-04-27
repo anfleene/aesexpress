@@ -15,24 +15,19 @@ class ChatController{
 		
 	}
 	
-	public String getMsg(){
-		return this.messageIn;
-	}
-	
-	public void receiveMsg(){
-		while(true){
-			if(this.inBound.getMessage() != this.encryptedIn){
-				this.encryptedIn = this.inBound.getMessage();
-				EncryptedString eString = new EncryptedString(this.encryptedIn, true);
-				try{
-					eString.decrypt();
-				}catch (Exception e){
-					e.printStackTrace();
-				}
-				this.messageIn = eString.toString();
+	public String receiveMsg(){
+		String message = this.inBound.getMsg(); 
+		if(message != this.encryptedIn){
+			this.encryptedIn = message;
+			EncryptedString eString = new EncryptedString(this.encryptedIn, true);
+			try{
+				eString.decrypt();
+			}catch (Exception e){
+				e.printStackTrace();
 			}
+			this.messageIn = eString.toString();
 		}
-		
+		return this.messageIn;
 	}
 	
 	public void sendMsg(String msg){

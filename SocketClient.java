@@ -43,6 +43,7 @@ class SocketClient{
 		}catch  (IOException e) {
 			System.out.println("No I/0");
 		}
+		System.out.println("Client in and out connected");
 	}
   }
 }

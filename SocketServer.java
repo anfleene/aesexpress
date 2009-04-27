@@ -16,10 +16,6 @@ class SocketServer{
 	   this.connected = false;
 	   this.listenSocket();
    } //End Constructor
-
- public String getMessage(){
-	 return this.line;
- }
   public void listenSocket(){
 	this.timeout = System.currentTimeMillis() + 10000;
 	while(!this.connected && System.currentTimeMillis() < this.timeout){
@@ -41,7 +37,7 @@ class SocketServer{
 			System.out.println("Accept failed: " + this.port);
 			System.exit(-1);
 		}//end try
-
+		System.out.println("Client connected");
 		try{
 			in = new BufferedReader(new InputStreamReader(client.getInputStream()));
 			out = new PrintWriter(client.getOutputStream(), true);
@@ -49,18 +45,20 @@ class SocketServer{
 			System.out.println("Accept failed: " + this.port);
 			System.exit(-1);
 		}//end try
- 
-		while(true){
-			try{
-				this.line = in.readLine();
-				//Send data back to client
-				out.println(line);
-			} catch (IOException e) {
-				System.out.println("Read failed");
-			}//end try
-		}//end while
+		System.out.println("in and out connected");
 	}//end else
   }//end listenSocket
+  
+  public String getMsg(){
+	  try{
+		  this.line = in.readLine();
+		  //Send data back to client
+		  this.out.println(line);
+	  } catch (IOException e) {
+		  System.out.println("Read failed");
+	  }//end try
+	  return this.line;
+  }
 
   protected void finalize(){
 //Clean up 
