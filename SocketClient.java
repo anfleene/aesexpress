@@ -28,8 +28,10 @@ class SocketClient{
   public void listenSocket(){
 //Create socket connection
 	 this.timeout = System.currentTimeMillis() + 30000;
+	 System.out.println("Timeout: " + this.timeout + " Current Time: " + System.currentTimeMillis());
 	 while(!this.connected && System.currentTimeMillis() < this.timeout){
 		 try{
+			 System.out.println("Attempting to Connect to Server");
 			 this.socket = new Socket(hostName, port);
 			 this.connected = true;
 		 } catch (UnknownHostException e) {

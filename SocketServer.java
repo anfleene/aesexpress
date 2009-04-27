@@ -22,9 +22,13 @@ class SocketServer{
    } //End Constructor
   public void listenSocket(){
 	this.timeout = System.currentTimeMillis() + 30000;
+	System.out.println("Timeout: " + this.timeout + " Current Time: " + System.currentTimeMillis());
 	while(!this.connected && System.currentTimeMillis() < this.timeout){
 		try{ 
+			System.out.println("Opening a socket");
 			this.server = new ServerSocket(this.port);
+			System.out.println("Attempting to accept a Client");
+			this.server.setSoTimeout(20000);
 			this.client = this.server.accept();
 			this.connected = true;
 		} catch (Exception e) {
