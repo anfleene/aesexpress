@@ -8,13 +8,7 @@ class ChatController{
 	boolean connected;
 	
 	ChatController(){ connected = false;}
-	
-	ChatController(String hostname, int clientPort, int serverPort){
-		this.outBound = new SocketClient(hostname, clientPort);
-		this.inBound = new SocketServer(serverPort);
 		
-	}
-	
 	public String receiveMsg(){
 		String message = this.inBound.getMsg(); 
 		if(message != this.encryptedIn){
@@ -39,10 +33,14 @@ class ChatController{
 	
 	public void connect(String host, int clientPort, int serverPort, boolean choice1){
 		if(choice1){
+			System.out.println("Connect to Server");
 			this.inBound  = new SocketServer(serverPort);
+			System.out.println("Connect to Client");
 			this.outBound = new SocketClient(host, clientPort);
 		}else{
+			System.out.println("Connect to Client");
 			this.outBound = new SocketClient(host, clientPort);
+			System.out.println("Connect to Server");
 			this.inBound  = new SocketServer(serverPort);
 		}
 	}

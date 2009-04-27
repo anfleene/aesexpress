@@ -27,6 +27,7 @@ class SocketClient{
 	 while(!this.connected && System.currentTimeMillis() < this.timeout){
 		 try{
 			 socket = new Socket(hostName, port);
+			 this.connected = true;
 		 } catch (UnknownHostException e) {
 			 System.out.println("Connection Failed, Retrying");
 		 } catch (IOException e){

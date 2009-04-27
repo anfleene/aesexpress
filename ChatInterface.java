@@ -174,14 +174,11 @@ public class ChatInterface extends JFrame implements ActionListener {
     			}
     			else if(con2.isSelected())
     			{
+    				choice1 = false
     				serverSocket = 4445;
     				clientSocket = 4444;
     			}
-    			else
-    			{
-    				chatArea.append("ERROR -> **************** CONNECTION FAILED, PLEASE RETRY***************\n");
-    		        chatArea.setCaretPosition(chatArea.getDocument().getLength());
-    			}
+    			
     			if(host.equals("") || serverSocket == -1 || clientSocket == -1)
     			{
     				
@@ -192,6 +189,7 @@ public class ChatInterface extends JFrame implements ActionListener {
     				System.out.println("ServerSocket " + serverSocket);
     				System.out.println("ClientSocket " + clientSocket);
     				System.out.println("Host Name " + host);
+    				System.out.println("Selceted Frist Choice?: " + choice1);
     				newChat.connect(host, clientSocket, serverSocket, choice1);
     			}
     			
