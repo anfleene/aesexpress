@@ -14,6 +14,7 @@ class SocketClient{
    SocketClient(String host, int portNumber){ //Begin Constructor
 	   this.hostName = host;
 	   this.port = portNumber;
+	   this.connected = false;
 	   this.listenSocket();
    } //End Constructor
    
