@@ -33,6 +33,7 @@ class SocketClient{
 		 try{
 			 System.out.println("Attempting to Connect to Server");
 			 this.socket = new Socket(hostName, port);
+			 this.socket.setSoTimeout(20000); 
 			 this.connected = true;
 		 } catch (UnknownHostException e) {
 			 System.out.println("Connection Failed, Retrying");
