@@ -174,7 +174,7 @@ public class ChatInterface extends JFrame implements ActionListener {
     			}
     			else if(con2.isSelected())
     			{
-    				choice1 = false
+    				choice1 = false;
     				serverSocket = 4445;
     				clientSocket = 4444;
     			}
