@@ -14,13 +14,18 @@ class SocketServer{
    SocketServer(int portNumber){ //Begin Constructor
 	   this.port = portNumber;
 	   this.connected = false;
+	   this.server = null;
+	   this.client = null;
+	   this.in = null;
+	   this.out = null;
 	   this.listenSocket();
    } //End Constructor
   public void listenSocket(){
-	this.timeout = System.currentTimeMillis() + 10000;
+	this.timeout = System.currentTimeMillis() + 30000;
 	while(!this.connected && System.currentTimeMillis() < this.timeout){
 		try{ 
-			server = new ServerSocket(this.port);
+			this.server = new ServerSocket(this.port);
+			this.client = this.server.accept();
 			this.connected = true;
 		} catch (Exception e) {
 			System.out.println("Connection failed, trying again");
@@ -32,18 +37,10 @@ class SocketServer{
 	}else{
 		System.out.println("Connected on port: " + this.port);
 		try{
-			client = server.accept();
+			this.in = new BufferedReader(new InputStreamReader(this.client.getInputStream()));
+			this.out = new PrintWriter(this.client.getOutputStream(), true);
 		} catch (IOException e) {
 			System.out.println("Accept failed: " + this.port);
-			System.exit(-1);
-		}//end try
-		System.out.println("Client connected");
-		try{
-			in = new BufferedReader(new InputStreamReader(client.getInputStream()));
-			out = new PrintWriter(client.getOutputStream(), true);
-		} catch (IOException e) {
-			System.out.println("Accept failed: " + this.port);
-			System.exit(-1);
 		}//end try
 		System.out.println("in and out connected");
 	}//end else

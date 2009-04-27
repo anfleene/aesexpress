@@ -14,6 +14,9 @@ class SocketClient{
    SocketClient(String host, int portNumber){ //Begin Constructor
 	   this.hostName = host;
 	   this.port = portNumber;
+	   this.socket = null;
+	   this.out = null;
+	   this.in = null;
 	   this.connected = false;
 	   this.listenSocket();
    } //End Constructor
@@ -24,10 +27,10 @@ class SocketClient{
   
   public void listenSocket(){
 //Create socket connection
-	 this.timeout = System.currentTimeMillis() + 10000;
+	 this.timeout = System.currentTimeMillis() + 30000;
 	 while(!this.connected && System.currentTimeMillis() < this.timeout){
 		 try{
-			 socket = new Socket(hostName, port);
+			 this.socket = new Socket(hostName, port);
 			 this.connected = true;
 		 } catch (UnknownHostException e) {
 			 System.out.println("Connection Failed, Retrying");
@@ -40,8 +43,8 @@ class SocketClient{
 	}else{
 		System.out.println("Connected on to host:" + this.hostName + " port: " + this.port);
 		try{
-			out = new PrintWriter(socket.getOutputStream(), true);
-			in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+			out = new PrintWriter(this.socket.getOutputStream(), true);
+			in = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
 		}catch  (IOException e) {
 			System.out.println("No I/0");
 		}
