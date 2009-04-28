@@ -37,7 +37,7 @@ class SocketServer{
 	}catch (IOException e){
 		System.out.println("Faild to read input and output");
 	}
-
+	System.out.println("Connection Established");
   }//end listenSocket
   
   public String getMsg(){

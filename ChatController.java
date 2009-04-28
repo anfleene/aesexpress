@@ -43,11 +43,11 @@ class ChatController{
 	public void connect(String host, boolean choice1){
 		if(choice1){
 			System.out.println("Connect to Server");
-			this.server  = new SocketServer(4446);
+			this.server  = new SocketServer(4447);
 			this.server.listenSocket();
 		}else{
 			System.out.println("Connect to Client");
-			this.client = new SocketClient(host, 4446);
+			this.client = new SocketClient(host, 4447);
 			this.client.listenSocket();
 		}
 	}
