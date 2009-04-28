@@ -36,6 +36,7 @@ class SocketServer{
 	try{
 		this.in = new BufferedReader(new InputStreamReader(this.client.getInputStream()));
 		this.out = new PrintWriter(this.client.getOutputStream(), true);
+		this.connected = true;
 		System.out.println("created input and output");
 	}catch (IOException e){
 		System.out.println("Faild to read input and output");
@@ -46,6 +47,7 @@ class SocketServer{
   public String getMsg(){
 	try{
 	  this.line = this.in.readLine();
+	  System.out.println(this.line);
 	} catch (IOException e) {
 		System.out.println("Unable to read input");
 	}
@@ -54,6 +56,7 @@ class SocketServer{
   
   public void sendMsg(String msg){
 	  this.out.println(msg);
+	  System.out.println(msg);
   }
 
   protected void finalize(){

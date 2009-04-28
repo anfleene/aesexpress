@@ -27,10 +27,12 @@ class SocketClient{
 		} catch (IOException e) {
 			System.out.println("Unable to read input");
 		}
+		System.out.println(this.line);
 		return this.line;
    }
    public void sendMsg(String msg){
-         this.out.println(msg);
+       System.out.println(msg);  
+	   this.out.println(msg);
    }
   
   public void listenSocket(){
@@ -46,6 +48,7 @@ class SocketClient{
 	try{
 		this.out = new PrintWriter(this.socket.getOutputStream(), true);
 		this.in = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
+		this.connected = true;
 		System.out.println("created input and output");
 	}catch  (IOException e) {
 		System.out.println("No I/0");
