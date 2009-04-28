@@ -9,7 +9,8 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.*;
 import javax.swing.Box;
-public class ChatInterface extends JFrame implements ActionListener {
+
+class ChatInterface extends JFrame implements ActionListener {
 
 	private JTextArea chatArea;
 	private JTextArea textInput;

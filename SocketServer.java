@@ -62,6 +62,7 @@ class SocketServer{
         this.in.close();
         this.out.close();
         this.server.close();
+        this.client.close();
     } catch (IOException e) {
         System.out.println("Could not close.");
         System.exit(-1);

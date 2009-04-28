@@ -3,8 +3,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JTextArea;
 
-
-public class hearChat implements ActionListener {
+class hearChat implements ActionListener {
 	
 
 	    JTextArea chatText;
