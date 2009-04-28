@@ -18,22 +18,25 @@ class SocketServer{
 	   this.client = null;
 	   this.in = null;
 	   this.out = null;
-   } //End Constructor
+	   try{
+		   System.out.println("Opening a socket");
+		   this.server = new ServerSocket(this.port);
+	   } catch (Exception e) {
+				System.out.println("Connection failed could not listen to port");
+	   }
+  } //End Constructor
   public void listenSocket(){
 	try{
-	  System.out.println("Opening a socket");
-	  this.server = new ServerSocket(this.port);
-	} catch (Exception e) {
-		System.out.println("Connection failed could not listen to port");
-	}
-	try{
+		System.out.println("Attempting to accept the client");
 		this.client = server.accept();
 	} catch (IOException e){
 		System.out.println("Accept failed: " + port);
 	}
+	System.out.println("Client Accepted");
 	try{
 		this.in = new BufferedReader(new InputStreamReader(this.client.getInputStream()));
 		this.out = new PrintWriter(this.client.getOutputStream(), true);
+		System.out.println("created input and output");
 	}catch (IOException e){
 		System.out.println("Faild to read input and output");
 	}

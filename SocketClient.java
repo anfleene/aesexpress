@@ -44,8 +44,9 @@ class SocketClient{
 		System.out.println("Connection Failed, Retrying");
 	}		
 	try{
-		out = new PrintWriter(this.socket.getOutputStream(), true);
-		in = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
+		this.out = new PrintWriter(this.socket.getOutputStream(), true);
+		this.in = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
+		System.out.println("created input and output");
 	}catch  (IOException e) {
 		System.out.println("No I/0");
 	}
