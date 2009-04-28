@@ -18,55 +18,47 @@ class SocketServer{
 	   this.client = null;
 	   this.in = null;
 	   this.out = null;
-	   this.listenSocket();
    } //End Constructor
   public void listenSocket(){
-	this.timeout = System.currentTimeMillis() + 30000;
-	System.out.println("Timeout: " + this.timeout + " Current Time: " + System.currentTimeMillis());
-	while(!this.connected && System.currentTimeMillis() < this.timeout){
-		try{ 
-			System.out.println("Opening a socket");
-			this.server = new ServerSocket(this.port);
-			System.out.println("Attempting to accept a Client");
-			this.server.setSoTimeout(20000);
-			this.client = this.server.accept();
-			this.connected = true;
-		} catch (Exception e) {
-			System.out.println("Connection failed, trying again");
-		}
-    }
-	
-	if(!this.connected){
-		System.out.println("Connection Failed");
-	}else{
-		System.out.println("Connected on port: " + this.port);
-		try{
-			this.in = new BufferedReader(new InputStreamReader(this.client.getInputStream()));
-			this.out = new PrintWriter(this.client.getOutputStream(), true);
-		} catch (IOException e) {
-			System.out.println("Accept failed: " + this.port);
-		}//end try
-		System.out.println("in and out connected");
-	}//end else
+	try{
+	  System.out.println("Opening a socket");
+	  this.server = new ServerSocket(this.port);
+	} catch (Exception e) {
+				System.out.println("Connection failed could not listen to port");
+	}
+	try{
+		this.client = server.accept();
+	} catch (IOException e){
+		System.out.println("Accept failed: " + port);
+	}
+	try{
+		this.in = new BufferedReader(new InputStreamReader(this.client.getInputStream()));
+		this.out = new PrintWriter(this.client.getOutputStream(), true);
+	}catch (IOException e){
+		System.out.println("Faild to read input and output");
+	}
+
   }//end listenSocket
   
   public String getMsg(){
-	  try{
-		  this.line = in.readLine();
-		  //Send data back to client
-		  this.out.println(line);
-	  } catch (IOException e) {
-		  System.out.println("Read failed");
-	  }//end try
-	  return this.line;
+	try{
+	  this.line = this.in.readLine();
+	} catch (IOException e) {
+		System.out.println("Unable to read input");
+	}
+	return this.line;
+  }
+  
+  public void sendMsg(String msg){
+	  this.out.println(msg);
   }
 
   protected void finalize(){
 //Clean up 
      try{
-        in.close();
-        out.close();
-        server.close();
+        this.in.close();
+        this.out.close();
+        this.server.close();
     } catch (IOException e) {
         System.out.println("Could not close.");
         System.exit(-1);

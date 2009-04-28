@@ -98,8 +98,8 @@ public class ChatInterface extends JFrame implements ActionListener {
 			
 			
 			
-			con1 = new JRadioButton("4444/4445");
-			con2 = new JRadioButton("4445/4444");
+			con1 = new JRadioButton("Server");
+			con2 = new JRadioButton("Client(must include and IP address)");
 			radioButtons = new ButtonGroup();
 			radioButtons.add(con1);
 			radioButtons.add(con2);
@@ -156,10 +156,6 @@ public class ChatInterface extends JFrame implements ActionListener {
     		}
     		else if(source.equals(connectButton))
     		{
-    			    		
-    			
-    			int serverSocket = -1;
-    			int clientSocket = -1;
     			boolean choice1 = false;
     		
     			String host = hostName.getText();
@@ -168,34 +164,24 @@ public class ChatInterface extends JFrame implements ActionListener {
     			if(con1.isSelected())
     			{
     				choice1 = true;
-    				serverSocket = 4444;
-    				clientSocket = 4445;
     				
     			}
     			else if(con2.isSelected())
     			{
     				choice1 = false;
-    				serverSocket = 4445;
-    				clientSocket = 4444;
     			}
     			
-    			if(host.equals("") || serverSocket == -1 || clientSocket == -1)
+    			if(!choice1 && host.equals(""))
     			{
     				
     				chatArea.append("ERROR -> **************** CONNECTION FAILED, PLEASE RETRY***************\n");
     		        chatArea.setCaretPosition(chatArea.getDocument().getLength());
     			}
     			else{
-    				System.out.println("ServerSocket " + serverSocket);
-    				System.out.println("ClientSocket " + clientSocket);
-    				System.out.println("Host Name " + host);
-    				System.out.println("Selceted Frist Choice?: " + choice1);
-    				newChat.connect(host, clientSocket, serverSocket, choice1);
+    				newChat.connect(host, choice1);
     			}
     			
-    			
-    			
-    			
+    				
     		}
             
            

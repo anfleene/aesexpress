@@ -3,9 +3,10 @@ import java.net.*;
 
 class SocketClient{
 	public boolean connected;
-	Socket socket = null;
-	PrintWriter out = null;
-	BufferedReader in = null;
+	Socket socket;
+	PrintWriter out;
+	BufferedReader in;
+	String line;
 	String hostName;
 	int port;
 	long timeout;
@@ -18,40 +19,47 @@ class SocketClient{
 	   this.out = null;
 	   this.in = null;
 	   this.connected = false;
-	   this.listenSocket();
    } //End Constructor
    
+   public String getMsg(){
+		try{
+		  this.line = this.in.readLine();
+		} catch (IOException e) {
+			System.out.println("Unable to read input");
+		}
+		return this.line;
+   }
    public void sendMsg(String msg){
-          out.println(msg);
+         this.out.println(msg);
    }
   
   public void listenSocket(){
 //Create socket connection
-	 this.timeout = System.currentTimeMillis() + 30000;
-	 System.out.println("Timeout: " + this.timeout + " Current Time: " + System.currentTimeMillis());
-	 while(!this.connected && System.currentTimeMillis() < this.timeout){
-		 try{
-			 System.out.println("Attempting to Connect to Server");
-			 this.socket = new Socket(hostName, port);
-			 this.socket.setSoTimeout(20000); 
-			 this.connected = true;
-		 } catch (UnknownHostException e) {
-			 System.out.println("Connection Failed, Retrying");
-		 } catch (IOException e){
-			 System.out.println("Connection Failed, Retrying");
-		 }
-  	}
-	if (!this.connected){
-		System.out.println("Connection Timed out");
-	}else{
-		System.out.println("Connected on to host:" + this.hostName + " port: " + this.port);
-		try{
-			out = new PrintWriter(this.socket.getOutputStream(), true);
-			in = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
-		}catch  (IOException e) {
-			System.out.println("No I/0");
-		}
-		System.out.println("Client in and out connected");
+	try{
+		System.out.println("Attempting to Connect to Server");
+		this.socket = new Socket(hostName, port);
+	} catch (UnknownHostException e) {
+		System.out.println("Connection Failed, Retrying");
+	} catch (IOException e){
+		System.out.println("Connection Failed, Retrying");
+	}		
+	try{
+		out = new PrintWriter(this.socket.getOutputStream(), true);
+		in = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
+	}catch  (IOException e) {
+		System.out.println("No I/0");
 	}
   }
+  
+  protected void finalize(){
+//	Clean up 
+	     try{
+	        this.in.close();
+	        this.out.close();
+	        this.socket.close();
+	    } catch (IOException e) {
+	        System.out.println("Could not close.");
+	        System.exit(-1);
+	    }
+	  }
 }

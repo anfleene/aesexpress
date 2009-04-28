@@ -3,14 +3,19 @@ class ChatController{
 	String messageOut;
 	String encryptedIn;
 	String encryptedOut;
-	SocketServer inBound;
-	SocketClient outBound;
+	SocketServer server;
+	SocketClient client;
 	boolean connected;
 	
 	ChatController(){ connected = false;}
 		
 	public String receiveMsg(){
-		String message = this.inBound.getMsg(); 
+		String message = "";
+		if(server == null){
+			message = this.client.getMsg();
+		}else{
+			message = this.server.getMsg();
+		}
 		if(message != this.encryptedIn){
 			this.encryptedIn = message;
 			EncryptedString eString = new EncryptedString(this.encryptedIn, true);
@@ -28,20 +33,22 @@ class ChatController{
 		this.messageOut = msg;
 		EncryptedString eString = new EncryptedString(msg);
 		this.encryptedOut = eString.toString();
-		this.outBound.sendMsg(eString.toString());
+		if(server == null){
+			this.client.sendMsg(eString.toString());
+		}else{
+			this.server.sendMsg(eString.toString());
+		}
 	}
 	
-	public void connect(String host, int clientPort, int serverPort, boolean choice1){
+	public void connect(String host, boolean choice1){
 		if(choice1){
 			System.out.println("Connect to Server");
-			this.inBound  = new SocketServer(serverPort);
-			System.out.println("Connect to Client");
-			this.outBound = new SocketClient(host, clientPort);
+			this.server  = new SocketServer(4444);
+			this.server.listenSocket();
 		}else{
 			System.out.println("Connect to Client");
-			this.outBound = new SocketClient(host, clientPort);
-			System.out.println("Connect to Server");
-			this.inBound  = new SocketServer(serverPort);
+			this.client = new SocketClient(host, 4444);
+			this.client.listenSocket();
 		}
 	}
 
