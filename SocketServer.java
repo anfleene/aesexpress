@@ -24,7 +24,7 @@ class SocketServer{
 	  System.out.println("Opening a socket");
 	  this.server = new ServerSocket(this.port);
 	} catch (Exception e) {
-				System.out.println("Connection failed could not listen to port");
+		System.out.println("Connection failed could not listen to port");
 	}
 	try{
 		this.client = server.accept();
