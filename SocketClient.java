@@ -2,7 +2,6 @@ import java.io.*;
 import java.net.*;
 
 class SocketClient{
-	public boolean connected;
 	Socket socket;
 	PrintWriter out;
 	BufferedReader in;
@@ -18,7 +17,6 @@ class SocketClient{
 	   this.socket = null;
 	   this.out = null;
 	   this.in = null;
-	   this.connected = false;
    } //End Constructor
    
    public String getMsg(){
@@ -48,8 +46,6 @@ class SocketClient{
 	try{
 		this.out = new PrintWriter(this.socket.getOutputStream(), true);
 		this.in = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
-		System.out.println(this.in.readLine());
-		this.connected = true;
 		System.out.println("created input and output");
 	}catch  (IOException e) {
 		System.out.println("No I/0");

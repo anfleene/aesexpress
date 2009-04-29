@@ -45,10 +45,12 @@ class ChatController{
 			System.out.println("Connect to Server");
 			this.server  = new SocketServer(4448);
 			this.server.listenSocket();
+			this.connected = true;
 		}else{
 			System.out.println("Connect to Client");
 			this.client = new SocketClient(host, 4448);
 			this.client.listenSocket();
+			this.connected = true;
 		}
 	}
 

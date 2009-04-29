@@ -172,8 +172,9 @@ class ChatInterface extends JFrame implements ActionListener {
            
     } // end of actionPerformed()
 	public void listenChat(){
-    	if(newChat.connected)
+		if(newChat.connected)
     	{
+    		System.out.println("connected");
     		String newMess = newChat.receiveMsg();
     		if(newMess != lastMess)
     		{

@@ -2,7 +2,6 @@ import java.io.*;
 import java.net.*;
 
 class SocketServer{
-	public boolean connected;
 	ServerSocket server = null;
 	Socket client = null;
 	BufferedReader in = null;
@@ -13,7 +12,6 @@ class SocketServer{
    
    SocketServer(int portNumber){ //Begin Constructor
 	   this.port = portNumber;
-	   this.connected = false;
 	   this.server = null;
 	   this.client = null;
 	   this.in = null;
@@ -36,8 +34,6 @@ class SocketServer{
 	try{
 		this.in = new BufferedReader(new InputStreamReader(this.client.getInputStream()));
 		this.out = new PrintWriter(this.client.getOutputStream(), true);
-		this.out.println("derp");
-		this.connected = true;
 		System.out.println("created input and output");
 	}catch (IOException e){
 		System.out.println("Faild to read input and output");
