@@ -11,7 +11,7 @@ class ChatController{
 		
 	public String receiveMsg(){
 		String message = "";
-		if(server == null){
+		if(this.server == null){
 			message = this.client.getMsg();
 		}else{
 			message = this.server.getMsg();

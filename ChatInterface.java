@@ -128,24 +128,7 @@ class ChatInterface extends JFrame implements ActionListener {
 
 		    
 		    content.setBackground(color);
-		    inter.setVisible(true);
-		    
-		    while (true)
-		    {
-		    	if(newChat.connected)
-		    	{
-		    		System.out.println("connected");
-		    		String newMess = newChat.receiveMsg();
-		    		if(newMess != lastMess)
-		    		{
-		    			lastMess = newMess;
-		    			chatArea.append(ipAdd + " -> " + newMess + "\n");
-		    	        chatArea.setCaretPosition(chatArea.getDocument().getLength());
-		    		}
-		    	}
-		    	
-		    }
-		
+		    inter.setVisible(true);		
 	
 	}
 	
@@ -188,5 +171,17 @@ class ChatInterface extends JFrame implements ActionListener {
             
            
     } // end of actionPerformed()
+	public void listenChat(){
+    	if(newChat.connected)
+    	{
+    		String newMess = newChat.receiveMsg();
+    		if(newMess != lastMess)
+    		{
+    			lastMess = newMess;
+    			chatArea.append(ipAdd + " -> " + newMess + "\n");
+    	        chatArea.setCaretPosition(chatArea.getDocument().getLength());
+    		}
+    	}
+	}
 	
 }
