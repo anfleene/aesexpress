@@ -48,6 +48,7 @@ class SocketClient{
 	try{
 		this.out = new PrintWriter(this.socket.getOutputStream(), true);
 		this.in = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
+		System.out.println(this.in.readLine());
 		this.connected = true;
 		System.out.println("created input and output");
 	}catch  (IOException e) {

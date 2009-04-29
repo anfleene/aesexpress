@@ -36,6 +36,7 @@ class SocketServer{
 	try{
 		this.in = new BufferedReader(new InputStreamReader(this.client.getInputStream()));
 		this.out = new PrintWriter(this.client.getOutputStream(), true);
+		this.out.println("derp");
 		this.connected = true;
 		System.out.println("created input and output");
 	}catch (IOException e){
