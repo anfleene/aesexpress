@@ -25,7 +25,7 @@ class SocketClient{
 		} catch (IOException e) {
 			System.out.println("Unable to read input");
 		}
-		System.out.println("Encrypted Out Bound Message: " + this.line);
+		System.out.println("Encrypted In Bound Message: " + this.line);
 		return this.line;
    }
    public void sendMsg(String msg){
