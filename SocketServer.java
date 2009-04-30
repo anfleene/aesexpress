@@ -44,7 +44,7 @@ class SocketServer{
   public String getMsg(){
 	try{
 	  this.line = this.in.readLine();
-	  System.out.println(this.line);
+	  System.out.println("Encrypted Out Bound Message: " + this.line);
 	} catch (IOException e) {
 		System.out.println("Unable to read input");
 	}
@@ -53,7 +53,7 @@ class SocketServer{
   
   public void sendMsg(String msg){
 	  this.out.println(msg);
-	  System.out.println(msg);
+	  System.out.println("Encrypted Out Bound Message: " + msg);
   }
 
   protected void finalize(){

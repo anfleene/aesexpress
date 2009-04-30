@@ -128,7 +128,11 @@ class ChatInterface extends JFrame implements ActionListener {
 
 		    
 		    content.setBackground(color);
-		    inter.setVisible(true);		
+		    inter.setVisible(true);
+		    
+		    while(true){
+		    	this.listenChat();
+		    }
 	
 	}
 	
@@ -161,9 +165,10 @@ class ChatInterface extends JFrame implements ActionListener {
     				
     				chatArea.append("ERROR -> **************** CONNECTION FAILED, PLEASE RETRY***************\n");
     		        chatArea.setCaretPosition(chatArea.getDocument().getLength());
-    			}
-    			else{
+    			}else{
     				newChat.connect(host, choice1);
+    				if(host.equals(""))
+    					ipAdd = "client";
     			}
     			
     				
@@ -174,7 +179,6 @@ class ChatInterface extends JFrame implements ActionListener {
 	public void listenChat(){
 		if(newChat.connected)
     	{
-    		System.out.println("connected");
     		String newMess = newChat.receiveMsg();
     		if(newMess != lastMess)
     		{
